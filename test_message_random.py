@@ -1,8 +1,6 @@
 import unittest
-from collections import Counter
-import math
-import operator
 import random_queue
+from test_utils import TestUtils
 
 
 class MessageRandomTest(unittest.TestCase):
@@ -20,7 +18,9 @@ class MessageRandomTest(unittest.TestCase):
             random_queue.RandomQueue([1] * 1001)
 
     def test_weighted_calculatetion(self):
-        self.assertEqual(random_queue.RandomQueue([20, 10, 30]).ratio_weights, [0.3333333333333333, 0.16666666666666666, 0.5])
+        self.assertEqual(random_queue.RandomQueue(
+            [20, 10, 30]).ratio_weights,
+            [0.3333333333333333, 0.16666666666666666, 0.5])
 
     def test_weighted_func_only_accept_from_0_to_1000(self):
         with self.assertRaises(ValueError):
@@ -34,28 +34,18 @@ class MessageRandomTest(unittest.TestCase):
             _list_messages = random_queue.RandomQueue([0.1, 20, 30]).list_messages
 
     def test_ratio_weight_output_should_around_ratio_weight_input(self):
-        _random_queue = self.message_random
-        _outcomes = [0] * len(_random_queue.list_messages)
-        n = 10000
-        for i in range(n):
-            _out = _random_queue.next()
-            _outcomes[_out - 1] += 1
+        _outcomes = TestUtils.simulate_random_queue([50, 30, 60])
+        _ratio_weight_outcome = TestUtils.simulate_random_queue([50, 30, 60])
 
-        _ratio_weight_outcome = _random_queue.weighted(_outcomes)
-        for index, i in enumerate(_random_queue.ratio_weights):
-            self.assertTrue(math.isclose(i, _ratio_weight_outcome[index], rel_tol=0.1, abs_tol=0.01))
+        for index, i in enumerate(random_queue.RandomQueue([50, 30, 60]).ratio_weights):
+            self.assertTrue(TestUtils.is_close(i, _ratio_weight_outcome[index]))
 
     def test_output_for_0_ratio(self):
-        _random_queue = random_queue.RandomQueue([70, 0, 90])
-        _outcomes = [0] * len(_random_queue.list_messages)
-        n = 10000
-        for i in range(n):
-            _out = _random_queue.next()
-            _outcomes[_out - 1] += 1
+        _outcomes = TestUtils.simulate_random_queue([70, 0, 90])
+        _ratio_weight_outcome = TestUtils.simulate_random_queue([70, 0, 90])
 
-        _ratio_weight_outcome = _random_queue.weighted(_outcomes)
-        for index, i in enumerate(_random_queue.ratio_weights):
-            self.assertTrue(math.isclose(i, _ratio_weight_outcome[index], rel_tol=0.1, abs_tol=0.01))
+        for index, i in enumerate(random_queue.RandomQueue([70, 0, 90]).ratio_weights):
+            self.assertTrue(TestUtils.is_close(i, _ratio_weight_outcome[index]))
 
 
 if __name__ == "__main__":

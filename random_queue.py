@@ -5,7 +5,7 @@ class RandomQueue(object):
     def __init__(self, weight_list):
         self.list_messages = self.init_list_messages(weight_list)
         self.weight_list = weight_list
-        self.ratio_weights = self.weighted(self.weight_list)
+        self.ratio_weights = self.calc_ratio_weighted(self.weight_list)
         self.acc_ratio_weights = [0] + list(np.cumsum(self.ratio_weights))
 
     def init_list_messages(self, weight_list):
@@ -21,7 +21,7 @@ class RandomQueue(object):
         else:
             raise ValueError('Value mus between 1 to 1000')
 
-    def weighted(self, weight_list):
+    def calc_ratio_weighted(self, weight_list):
         """
         Calculate weight of message. Weight of message / Sum(Weight of message).
         """
