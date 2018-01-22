@@ -8,29 +8,29 @@ class RandomQueue(object):
         self.ratio_weights = self.weighted(self.weight_list)
         self.acc_ratio_weights = [0] + list(np.cumsum(self.ratio_weights))
 
-    def init_list_messages(self, probabilities_message):
+    def init_list_messages(self, weight_list):
         """
         Initialize list base one weight message list.
         It will return integer list base on index of weight message list.
         """
-        if 1 <= len(probabilities_message) <= 1000:
+        if 1 <= len(weight_list) <= 1000:
             _list = list()
-            for i in range(len(probabilities_message)):
+            for i in range(len(weight_list)):
                 _list.append(i + 1)
             return _list
         else:
             raise ValueError('Value mus between 1 to 1000')
 
-    def weighted(self, probabilities_message):
+    def weighted(self, weight_list):
         """
         Calculate weight of message. Weight of message / Sum(Weight of message).
         """
-        _sum_messages = sum(probabilities_message)
-        if 1 <= len(probabilities_message) <= 1000:
+        _sum_weights = sum(weight_list)
+        if 1 <= len(weight_list) <= 1000:
             _weighted = []
-            for idx, x in enumerate(probabilities_message):
+            for idx, x in enumerate(weight_list):
                 if isinstance(x, int):
-                    _weighted.append(x / _sum_messages)
+                    _weighted.append(x / _sum_weights)
                 else:
                     raise TypeError('Weight must be Integer')
             return _weighted

@@ -35,21 +35,15 @@ class MessageRandomTest(unittest.TestCase):
 
     def test_probability_output_should_around_probability_input(self):
         _random_queue = self.message_random
-        _outcomes = []
+        _outcomes = [0] * len(_random_queue.list_messages)
         n = 10000
-        for _ in range(n):
-            _outcomes.append(_random_queue.next())
-            c = Counter(_outcomes)
+        for i in range(n):
+            _out = _random_queue.next()
+            _outcomes[_out - 1] += 1
 
-        for key in c:
-            c[key] = c[key] / n
-
-        probabiliti_outcome = dict(c)
+        _ratio_weight_outcome = _random_queue.weighted(_outcomes)
         for index, i in enumerate(_random_queue.ratio_weights):
-            if operator.eq(i, 0):
-                self.assertIsNone(probabiliti_outcome.get(index + 1))
-            else:
-                self.assertTrue(math.isclose(i, probabiliti_outcome.get(index + 1), rel_tol=0.7))
+            self.assertTrue(math.isclose(i, _ratio_weight_outcome[index], rel_tol=0.1, abs_tol=0.01))
 
 
 if __name__ == "__main__":

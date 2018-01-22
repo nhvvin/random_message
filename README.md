@@ -1,4 +1,4 @@
-# Trusting Social Candiate Assessment Exsercises 
+# Trusting Social Candiate Assessment exsercises
 
 This exercise use python3. Please install python3 with:
 
@@ -15,7 +15,7 @@ pip install -r requirements.txt
 For run exercise with default example:
 
 ```bash
-python3 message_random.py
+python3 random_queue.py
 ```
 
 For run test:
