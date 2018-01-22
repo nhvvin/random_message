@@ -33,8 +33,20 @@ class MessageRandomTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             _list_messages = random_queue.RandomQueue([0.1, 20, 30]).list_messages
 
-    def test_probability_output_should_around_probability_input(self):
+    def test_ratio_weight_output_should_around_ratio_weight_input(self):
         _random_queue = self.message_random
+        _outcomes = [0] * len(_random_queue.list_messages)
+        n = 10000
+        for i in range(n):
+            _out = _random_queue.next()
+            _outcomes[_out - 1] += 1
+
+        _ratio_weight_outcome = _random_queue.weighted(_outcomes)
+        for index, i in enumerate(_random_queue.ratio_weights):
+            self.assertTrue(math.isclose(i, _ratio_weight_outcome[index], rel_tol=0.1, abs_tol=0.01))
+
+    def test_output_for_0_ratio(self):
+        _random_queue = random_queue.RandomQueue([70, 0, 90])
         _outcomes = [0] * len(_random_queue.list_messages)
         n = 10000
         for i in range(n):
