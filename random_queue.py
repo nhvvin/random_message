@@ -27,13 +27,13 @@ class RandomQueue(object):
         """
         _sum_weights = sum(weight_list)
         if 1 <= len(weight_list) <= 1000:
-            _weighted = []
+            _ratio_weighted = []
             for idx, x in enumerate(weight_list):
                 if isinstance(x, int):
-                    _weighted.append(x / _sum_weights)
+                    _ratio_weighted.append(x / _sum_weights)
                 else:
                     raise TypeError('Weight must be Integer')
-            return _weighted
+            return _ratio_weighted
         else:
             raise ValueError('Value must between 1 to 1000')
 
